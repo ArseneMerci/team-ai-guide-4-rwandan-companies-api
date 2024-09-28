@@ -2,7 +2,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { groqTranscribeAudioJob, speechifyText2AudioJob, upload } from '../util';
+import { generateAIResponse, groqTranscribeAudioJob, speechifyText2AudioJob, upload } from '../util';
 
 const router = express.Router();
 
@@ -18,8 +18,10 @@ router.post('/', upload, async (req: Request, res: Response, next: NextFunction)
         // create a groq transcription from the audio file
         const transcription: string = await groqTranscribeAudioJob(originalFilePath);
         console.log('Transcription:', transcription);
+        const AI_generatedResponse = await generateAIResponse(transcription);
+        console.log('AI Response:', AI_generatedResponse);
         // create an audio file from the transcription text using speechify
-        const { audio_data: audioData, audio_format: audioFormat } = await speechifyText2AudioJob(transcription, originalFileFormat);
+        const { audio_data: audioData, audio_format: audioFormat } = await speechifyText2AudioJob(AI_generatedResponse.recommended_service, originalFileFormat);
 
         // send the audio file back to the client
         const transcribedAudioBuffer = Buffer.from(audioData, 'base64');

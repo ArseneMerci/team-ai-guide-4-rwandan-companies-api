@@ -87,3 +87,19 @@ export const speechifyText2AudioJob = async (transcribedText: string, format: st
     const response = await fetch(url, options);
     return response.json();
 };
+
+export const generateAIResponse = async (transcription: string): Promise<{ recommended_service: string }> => {
+    const url = process.env.RAG_APPLICATION_URL;
+    const options = {
+        method: 'POST',
+        headers: {
+            accept: '*/*',
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            'user_input': transcription,
+        }),
+    };
+    const response = await fetch(url, options);
+    return response.json();
+};
