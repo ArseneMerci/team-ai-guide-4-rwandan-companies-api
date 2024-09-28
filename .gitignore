@@ -111,4 +111,4 @@ dist
 
 # local file storage
 .DS_Store
-files/
+uploads
