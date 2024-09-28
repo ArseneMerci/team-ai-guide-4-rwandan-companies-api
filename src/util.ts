@@ -75,7 +75,7 @@ export const speechifyText2AudioJob = async (transcribedText: string, format: st
         },
         body: JSON.stringify({
             'audio_format': format.startsWith('.') ? format.slice(1) : format,
-            'input': `${transcribedText} bitch`,
+            'input': transcribedText,
             'language': 'en-US',
             'model': 'simba-english',
             'options': {
